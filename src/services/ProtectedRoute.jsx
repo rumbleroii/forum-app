@@ -38,17 +38,23 @@ const Logout = () => {
 
   return (
     <div>
-      <Link to='/' onClick={() => setUser(null)}>Logout</Link>
-      <br/>
-      <Link to='/profile'>Profile</Link>
-      <br/>
-      <Link to='/home'>Home</Link>
-      <br/>
-      {displayOrgPanel ? <Link to='/panel'>Organization Panel</Link> : null}
-      <hr/>
+      <nav className='p-4 bg-Cblack shadow flex justify-between items-center'>
+          <span className='text-2xl text-white font-bold'>
+            <Link className='text-white hover:text-slate-500 font-bold' to='/home'>IG Forum</Link>
+          </span>
+        <div className='flex justify-center items-center gap-4'>
+            <Link className='m-2 text-white hover:text-slate-500 font-bold' to='/home'>Home</Link>
+            <Link className='m-2 text-white hover:text-slate-500 font-bold' to='/profile'>Profile</Link>
+            <Link className='m-2 text-white hover:text-slate-500 font-bold' to='/about'>About</Link>
+            {displayOrgPanel ? (
+                <Link className="m-2 w-fit mx-auto bg-Cblue hover:bg-Cdarkblue text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" to='/panel'>Organization Panel</Link>
+            ) : null}
+            <Link className="m-2 w-fit mx-auto bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" to='/' onClick={() => setUser(null)}>Logout</Link>
+             
+        </div>
+      </nav>
       <Outlet/>
     </div>
-  
   )
 }
 export default ProtectedRoute

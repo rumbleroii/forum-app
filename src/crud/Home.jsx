@@ -57,8 +57,10 @@ const Home = () => {
 
   
   return (
-      <div className="home">
-        <h1> Your Posts </h1>
+      <div>
+        <div className='container mx-auto p-5 text-center text-4xl border-b-2'>
+          <h1>Your Posts</h1>
+        </div>
         {postsData.map((item, i) => {
           return (
             <Posts key={item} cardId={i} {...item} handleDeletePost = {handleDeletePost}/>
@@ -69,6 +71,7 @@ const Home = () => {
 };
 
 const Posts = (props) => {
+  console.log(props);
   const navigate = useNavigate();
 
   //Edit Button Handler
@@ -99,37 +102,53 @@ const Posts = (props) => {
   
 
   return (
-    <div className="postCard" id={props.cardId}>
-      <ul>
-        <li>
-          <h1>Organization: {props.organization}</h1>
-        </li>
-        <li>Title: {props.title}</li>
-        <li>Body: {props.body}</li>
-        <li>Likes: {props.likes}</li>
-        <li>Registrants: {props.registrants}</li>
-        <li>
-          Pic <img src={`http://localhost:5000/${props.img}`} />
-        </li>
-        <li>Is Updated: {props.updated.toString()}</li>
-        <li>Venue: {props.venue}</li>
-        <li>
-          Date: {moment(props.date).local().format("MMMM Do YYYY, hh:mm a")}
-        </li>
-        <li>Duration: {props.duration}</li>
-        <li>WhatsApp Link: {props.waLink}</li>
-      </ul>
-      <br />
-      <button
-        onClick={() => {
-          if (window.confirm("Are you sure you want to delete") === true) return props.handleDeletePost(props._id);
-        }}
-      >
-        Delete Post
-      </button>
-      <button onClick={editButtonHandler}>Edit Post</button>
-      <button onClick={downloadButtonHandler}>Download Registrants</button>
-    </div>
+      <div className='mt-5 mx-auto container flex flex-col items-center border bg-slate-100 shadow rounded' id={props._id}>
+            <div className="w-[40rem] bg-white text-gray-700 min-h-full shadow-lg rounded-md overflow-hidden mx-16 mt-16 mb-5" id={props.cardId}>
+                <h2 className='bg-Cblack p-5 text-white font-semibold text-3xl overflow-ellipsis overflow-hidden whitespace-nowrap'>
+                    {props.title}
+                </h2>
+                <img  className="w-fit h-fit object-cover p-4" src={`http://localhost:5000/${props.img}`} />
+                <div className='m-5 flex flex-col justify-center'>
+                    <div className='my-4 mx-8 p-5 border text-lg'>
+                        <p className='text-sm text-slate-400'>Event Description</p>
+                        {props.body}
+                    </div>
+                    <label className='text-lg pb-2'>Date: <span className='text-red-700'>{moment(props.date).local().format("MMMM Do YYYY, hh:mm a")}</span></label>
+                    <div className='mt-5 w-full'>
+                    Likes:  {props.likes}
+                    </div>
+                    <div className='mt-5 w-full'>
+                    Registrants:  {props.registrants}
+                    </div>
+                    <div className='mt-5 w-full'>
+                    Duration:  {props.duration}
+                    </div>
+                    <div className='mt-5 w-full'>
+                    Venue:  {props.venue}
+                    </div>
+                    <div className='mt-5 w-full'>
+                    WhatsApp Link:  {props.waLink}
+                    </div>
+                    <div className='mt-5 w-full'>
+                    Updated:  {props.updated.toString()}
+                    </div>
+
+                </div>      
+            </div>
+            <div className="flex gap-3">
+              <button className="m-3 w-fit mx-auto bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  onClick={() => {
+                    if (window.confirm("Are you sure you want to delete") === true) return props.handleDeletePost(props._id);
+                  }}
+                >
+                Delete Post
+              </button>
+              <button className="m-3 w-fit mx-auto bg-Cdarkblue hover:bg-Cblue text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={editButtonHandler}>Edit Post</button>
+              <button className="m-3 w-fit mx-auto bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={downloadButtonHandler}>Download Registrants</button>  
+            </div>
+            
+        </div>
+      
   );
 };
 

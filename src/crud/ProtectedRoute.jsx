@@ -23,13 +23,17 @@ const NavBar = () => {
 
   return (
     <div>
-      <Link to='/' onClick={(() => setUser(null))}>Logout</Link>
-      <br/>
-      <Link to='/home'>Home</Link>
-      <br/>
-      <Link to='/panel/post'>Create Post</Link>
-      <hr/>
-      <Outlet/>
+        <nav className='p-4 bg-Cblack shadow flex justify-between items-center'>
+            <span className='text-2xl text-white font-bold'>
+            <Link className='text-white hover:text-slate-500 font-bold' to='/panel'>IG Forum Organizational Panel</Link>
+            </span>
+          <div className='flex justify-center items-center gap-4'>
+            <Link className='m-2 text-slate-100 hover:text-slate-50	font-bold'to='/home'>Main Home</Link>
+            <Link className="m-2 w-fit mx-auto bg-Cblue hover:bg-Cdarkblue text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" to='/panel/post'>Create Post</Link>
+            <Link className='m-2 w-fit mx-auto bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline' to='/' onClick={() => setUser(null)}>Logout</Link>
+          </div>
+        </nav>
+        <Outlet/>
     </div>
   
   )

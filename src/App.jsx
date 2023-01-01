@@ -9,6 +9,7 @@ import Home from './components/Home';
 
 import ProtectedRoute from './services/ProtectedRoute';
 import AppPanel from './crud/AppPanel';
+import About from './components/About';
 
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
         <Route path='*' element={<h1>Route Dosent Exists, Sorry</h1>}/>
       </Route> 
       <Route path='/panel/*' element={<AppPanel/>}/>
+      <Route path='/about' element={<About/>}/>
     </Routes>
   )
 }

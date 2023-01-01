@@ -77,68 +77,71 @@ const GoogleAuth = () => {
 
 
     const handleCallbackResponse = async (res) => {
-
         // Dispatch Login Init Notice
         dispatchLogin({
             type: "LOGIN_INIT"
         })
+        
+        setTimeout(async () => {
 
-        const userObj = jwt_decode(res.credential);
+            const userObj = jwt_decode(res.credential);
 
-        try {
-            const server_session_token = await axiosInstance.post('/auth/login', {
-                data: {
-                    email: userObj.email
-                }
-            })
-            
-            // Persistent User
-            const userPersistentData = {
-                name: userObj.name,
-                email: userObj.email,
-                firstname: userObj.given_name,
-                picture: userObj.picture
-            }
-
-            setUser(userPersistentData, server_session_token.data.accessToken);
-
-            // Direct Login Notice
-            dispatchLogin({
-                type: "DIRECT_LOGIN",
-            })
-
-            return navigate('/home');
-            
-        } catch (err) {
-            console.log(err);
-            
-            if(err.code === "ERR_NETWORK") return dispatchLogin({});
-                
-            // Wrong Email Notice
-            if(err.response.data.msg === "Sign in through Institute Email") return dispatchLogin({ type: "EMAIL_ERROR" }) 
-            
-
-            // Direct Register 
-            if(err.response.data.errors[0].msg = 'Organization / User does not exists'){
-                    // Register direct
-                    dispatchLogin({
-                        type: "DIRECT_REGISTER",
-                    })
-
-                    // Persistent User
-                    const userPersistentData = {
-                        name: userObj.name,
-                        email: userObj.email,
-                        firstname: userObj.given_name,
-                        picture: userObj.picture
+            try {
+                const server_session_token = await axiosInstance.post('/auth/login', {
+                    data: {
+                        email: userObj.email
                     }
-                    
-                    return navigate('/register', {state:{...userPersistentData}});
-            } 
+                })
+                
+                // Persistent User
+                const userPersistentData = {
+                    name: userObj.name,
+                    email: userObj.email,
+                    firstname: userObj.given_name,
+                    picture: userObj.picture
+                }
 
-            // Unknown Error
-            if(err) return dispatchLogin({});
-        }
+                setUser(userPersistentData, server_session_token.data.accessToken);
+
+                // Direct Login Notice
+                dispatchLogin({
+                    type: "DIRECT_LOGIN",
+                })
+
+                return navigate('/home');
+                
+            } catch (err) {
+                console.log(err);
+                
+                if(err.code === "ERR_NETWORK") return dispatchLogin({});
+                    
+                // Wrong Email Notice
+                if(err.response.data.msg === "Sign in through Institute Email") return dispatchLogin({ type: "EMAIL_ERROR" }) 
+                
+
+                // Direct Register 
+                if(err.response.data.errors[0].msg = 'Organization / User does not exists'){
+                        // Register direct
+                        dispatchLogin({
+                            type: "DIRECT_REGISTER",
+                        })
+
+                        // Persistent User
+                        const userPersistentData = {
+                            name: userObj.name,
+                            email: userObj.email,
+                            firstname: userObj.given_name,
+                            picture: userObj.picture
+                        }
+                        
+                        return navigate('/register', {state:{...userPersistentData}});
+                } 
+
+                // Unknown Error
+                if(err) return dispatchLogin({});
+            }
+        }, 2000)
+        
     }   
 
     React.useEffect(() => {
@@ -161,12 +164,12 @@ const GoogleAuth = () => {
     },[])
 
     return (
-        <div>
-            {login.isLoading ?  (<div className='py-4' id='loading_status'>Loading...</div>) : null}
-            {login.isError ?  (<div className='text-red-700 font-bold' id='error_status'>Error, Try Again</div>) : null}
+        <div className='text-center font-bold p-4'>
+            {login.isLoading ?  (<div id='loading_status' className='flex justify-center items-center'><img class="h-8 w-8" src="https://icons8.com/preloaders/preloaders/1488/Iphone-spinner-2.gif" alt=""/></div>) : null}
+            {login.isError ?  (<div className='text-red-700' id='error_status'>Error, Try Again</div>) : null}
             {login.emailWrong ?  (<div className='text-pink-700' id='error_status'>Please Use Institute Email</div>) : null}
             {login.registerDirect ? <div>Redirecting To Register Page</div> : null}
-            {!isLogged ? <div id='signInDiv'></div> : <p>User Logged In, Go To Home <Link to='/home'>HOME</Link></p>}
+            {!isLogged ? <div id='signInDiv' className='p-4'></div> : <p>User Logged In, Go To Home <Link to='/home'>HOME</Link></p>}
         </div> 
     )
 }
