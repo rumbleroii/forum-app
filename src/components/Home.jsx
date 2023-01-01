@@ -14,7 +14,7 @@ const Home = () => {
   // Global State
   const user = useUserStore(state => state.authUser);
   const loading = useUserStore(state => state.loading);
-    const setLoading = useUserStore(state => state.setLoading);
+  const setLoading = useUserStore(state => state.setLoading);
  
   // Local State
   const [postsData, setPostsData] = React.useState([]);
@@ -55,6 +55,7 @@ const Home = () => {
 
             <div className='flex flex-col justify-center items-center'>
                 {loading ? <Loading/> : null }
+                {postsData.length === 0 ? <p className='text-xl'>No Posts..</p> : null}
 
                 {postsData.map((item) => {
                     return <Posts key={item._id} item={item} setPostsData={setPostsData} postsData={postsData} loading={loading} setLoading={setLoading}/>

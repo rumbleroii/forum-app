@@ -39,6 +39,7 @@ const Profile = () => {
     <div>
       <div className='container mx-auto p-5 text-center text-4xl border-b-2'>
         <h1>My Profile</h1>
+        <p className='mt-4 text-slate-500 text-sm'>This profile information will be sent during event registeration to the organization, Please fill it correctly</p>
       </div>
       {loading ? 
       <div className='flex m-4 flex-col justify-center items-center'>
@@ -134,7 +135,7 @@ const ProfileEditCard = ({ profileData, user }) => {
 
       if (editProfile) {
         alert("Profile Edited");
-        navigate("/home");
+        navigate("/profile");
       }
     } catch (err) {
       console.log(err);
