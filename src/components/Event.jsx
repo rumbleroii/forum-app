@@ -77,7 +77,7 @@ const Event = () => {
                             </div>
                             <label className='text-lg pb-2'>Date: <span className='text-red-700'>{moment(item.date).local().format("MMMM Do YYYY, hh:mm a")}</span></label>
                             <label className='my-1'>Venue: <span>{item.venue}</span></label>
-                            <label className='my-1'>Duration: <span>{item.duration}</span></label>
+                            {/* <label className='my-1'>Duration: <span>{item.duration}</span></label> */}
                             <label className='my-1'>Registerants: <span>{item.registrants}</span></label>
                         </div>
                         {!isRegister ? (

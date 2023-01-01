@@ -120,17 +120,17 @@ const Posts = (props) => {
                     <div className='mt-5 w-full'>
                     Registrants:  {props.registrants}
                     </div>
-                    <div className='mt-5 w-full'>
+                    {/* <div className='mt-5 w-full'>
                     Duration:  {props.duration}
-                    </div>
+                    </div> */}
                     <div className='mt-5 w-full'>
                     Venue:  {props.venue}
                     </div>
                     <div className='mt-5 w-full'>
-                    WhatsApp Link:  {props.waLink}
+                    WhatsApp Link:  <a className='text-red-400 underline'href={props.waLink}>{props.waLink}</a>
                     </div>
                     <div className='mt-5 w-full'>
-                    Updated:  {props.updated.toString()}
+                    Updated: <span className="text-green-700 font-bold">{props.updated.toString()}</span>
                     </div>
 
                 </div>      
