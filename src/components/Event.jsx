@@ -25,16 +25,21 @@ const Event = () => {
     }, [item, setPostsData])
 
     const handleRegister = async () => {
-        await axiosInstance.put(`/posts/register/${id}`, {
-            headers: {
-                'x-auth-token': getAuthorizationHeader()
-            }
-        })
-
-        if(isRegister === false) setRegister(true);
-        if(isRegister === true) setRegister(false);
+        try {
+            setLoading(true);
+            await axiosInstance.put(`/posts/register/${id}`, {
+                headers: {
+                    'x-auth-token': getAuthorizationHeader()
+                }
+            })
+    
+            if(isRegister === false) setRegister(true);
+            if(isRegister === true) setRegister(false);
+            setLoading(false);
+        } catch (err) {
+            console.log(err);
+        }
     }
-
 
     // Fetch data
     React.useEffect(() => {

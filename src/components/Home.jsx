@@ -7,14 +7,21 @@ import { Link } from 'react-router-dom';
 
 import Loading from './Loading';
 
+
+
 const Home = () => {
+
   // Global State
   const user = useUserStore(state => state.authUser);
   const loading = useUserStore(state => state.loading);
-  const setLoading = useUserStore(state => state.setLoading);
-
+    const setLoading = useUserStore(state => state.setLoading);
+ 
   // Local State
   const [postsData, setPostsData] = React.useState([]);
+  const [isError, setError] = React.useState({
+    errorStatus: false,
+    errorMsg: ""
+  });
 
 
   React.useEffect(() => {
@@ -33,6 +40,7 @@ const Home = () => {
             setLoading(false);
         } catch (err) {
             console.log(err.response.data.msg);
+            return setError({errorStatus: true, errorMsg: err.response.data.msg});
         }
     }
 
@@ -49,14 +57,14 @@ const Home = () => {
                 {loading ? <Loading/> : null }
 
                 {postsData.map((item) => {
-                    return <Posts key={item._id} item={item} setPostsData={setPostsData} postsData={postsData}/>
+                    return <Posts key={item._id} item={item} setPostsData={setPostsData} postsData={postsData} loading={loading} setLoading={setLoading}/>
                 })}
             </div>
         </div>
     )
 }
 
-const Posts = ({ item }) => {
+const Posts = ({ item, loading, setLoading  }) => {
 
     const [isLiked, setLike] = React.useState({
         likeStatus: item.isLiked,
@@ -64,17 +72,25 @@ const Posts = ({ item }) => {
     });
 
     const handleLike = async () => {
-        await axiosInstance.put(`/posts/like/${item._id}`, {
-            headers: {
-                'x-auth-token': getAuthorizationHeader()
+        setLoading(true);
+        try {
+            await axiosInstance.put(`/posts/like/${item._id}`, {
+                headers: {
+                    'x-auth-token': getAuthorizationHeader()
+                }
+            }) 
+            
+            setLoading(false);
+            if(isLiked.likeStatus == false) {
+                return setLike({likeStatus: true, likeCount: isLiked.likeCount + 1});
+            } else {
+                return setLike({likeStatus: false, likeCount: isLiked.likeCount - 1});
             }
-        }) 
-
-        if(isLiked.likeStatus == false) {
-            return setLike({likeStatus: true, likeCount: isLiked.likeCount + 1});
-        } else {
-            return setLike({likeStatus: false, likeCount: isLiked.likeCount - 1});
+        } catch (err) {
+            console.log(err.response.data.msg);
+            return setError({errorStatus: true, errorMsg: err.response.data.msg});
         }
+        
     }
 
     return (
@@ -98,6 +114,7 @@ const Posts = ({ item }) => {
                     </div> */}
                     {/* <label className='text-lg pb-2'>Date: <span className='text-red-700'>{moment(item.date).local().format("MMMM Do YYYY, hh:mm a")}</span></label> */}
                     <div className='mt-5 w-full flex justify-center items-center gap-3'>
+                        { loading ? <Loading/> : null }
                         { isLiked.likeStatus ? 
                             <div>  
                                 <button onClick={handleLike} className='flex gap-1 bg-red-200 rounded border p-1'>

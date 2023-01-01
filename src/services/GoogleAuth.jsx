@@ -169,7 +169,7 @@ const GoogleAuth = () => {
             {login.isError ?  (<div className='text-red-700' id='error_status'>Error, Try Again</div>) : null}
             {login.emailWrong ?  (<div className='text-pink-700' id='error_status'>Please Use Institute Email</div>) : null}
             {login.registerDirect ? <div>Redirecting To Register Page</div> : null}
-            {!isLogged ? <div id='signInDiv' className='p-4'></div> : <p>User Logged In, Go To Home <Link to='/home'>HOME</Link></p>}
+            {!isLogged ? <div id='signInDiv' className='p-16'></div> : <p>User Logged In, Go To Home <Link to='/home'>HOME</Link></p>}
         </div> 
     )
 }
