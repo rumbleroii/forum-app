@@ -1,23 +1,26 @@
 import React from 'react'
+
 import useUserStore from '../services/Store'
-import axios from 'axios';
 import { axiosInstance, getAuthorizationHeader } from '../services/AxiosInstance';
-
 import moment from 'moment';
-
 import { Link } from 'react-router-dom';
+
+import Loading from './Loading';
 
 const Home = () => {
   // Global State
   const user = useUserStore(state => state.authUser);
+  const loading = useUserStore(state => state.loading);
+  const setLoading = useUserStore(state => state.setLoading);
 
   // Local State
   const [postsData, setPostsData] = React.useState([]);
-  const [loading, setLoading] = React.useState(false);
 
 
   React.useEffect(() => {
+
     setLoading(true);
+
     async function fetchData() {
         try {
             const posts = await axiosInstance.get('/posts', {
@@ -26,12 +29,11 @@ const Home = () => {
                 }
             })
 
-            setLoading(false);
             setPostsData(posts.data);
+            setLoading(false);
         } catch (err) {
             console.log(err.response.data.msg);
         }
-
     }
 
     fetchData();
@@ -44,9 +46,8 @@ const Home = () => {
             </div>
 
             <div className='flex flex-col justify-center items-center'>
-                {loading ? 
-                   <img className="h-16 w-16" src="https://icons8.com/preloaders/preloaders/1488/Iphone-spinner-2.gif" alt="loading"/> : null 
-                }
+                {loading ? <Loading/> : null }
+
                 {postsData.map((item) => {
                     return <Posts key={item._id} item={item} setPostsData={setPostsData} postsData={postsData}/>
                 })}

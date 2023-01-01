@@ -9,10 +9,10 @@ const AppPanel = () => {
   return (
     <Routes>
         <Route element={<ProtectedRoute/>}>
-        <Route path="/" element={<Home />} />
-        <Route path="/post" element={<CreatePost />} />
-        <Route path="/edit" element={<EditPost />} />
-      </Route>
+          <Route path="/" element={<Home />} />
+          <Route path="/post" element={<CreatePost />} />
+          <Route path="/edit" element={<EditPost />} />
+        </Route>
     </Routes>
   );
 };

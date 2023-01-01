@@ -6,15 +6,19 @@ import useUserStore from "../services/Store";
 
 import download from 'downloadjs';
 import moment from "moment";
+import Loading from "../components/Loading";
 
 
 const Home = () => {
   // Global State
   const user = useUserStore(state => state.authUser);
-    
+  const loading = useUserStore(state => state.loading);
+  const setLoading = useUserStore(state => state.setLoading);
+
+
   // Local States
   const [postsData, setPostsData] = React.useState([]);
-  const [loading, setLoading] = React.useState(false);
+
 
   React.useEffect(() => {
     setLoading(true);
@@ -26,8 +30,8 @@ const Home = () => {
           },
         });
   
-        setLoading(false);
         setPostsData(posts.data);
+        setLoading(false);
       } catch (err) {
         console.log(err.response.data.msg);
       }
@@ -61,6 +65,12 @@ const Home = () => {
         <div className='container mx-auto p-5 text-center text-4xl border-b-2'>
           <h1>Your Posts</h1>
         </div>
+        
+        {loading ? 
+        <div className="flex m-4 justify-center items-center">
+          <Loading/>
+        </div> : null}
+        
         {postsData.map((item, i) => {
           return (
             <Posts key={item} cardId={i} {...item} handleDeletePost = {handleDeletePost}/>

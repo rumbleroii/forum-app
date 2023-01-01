@@ -1,17 +1,22 @@
 import React from 'react'
+
 import { axiosInstance, getAuthorizationHeader } from '../services/AxiosInstance'
 import { useParams } from 'react-router-dom'
 import moment from 'moment'
+import useUserStore from '../services/Store'
 
-import { Link } from 'react-router-dom'
+import Loading from './Loading'
 
 const Event = () => {
     const {id} = useParams();
 
+    // Global
+    const loading = useUserStore(state => state.loading);
+    const setLoading = useUserStore(state => state.setLoading);
+
     // Local State
     const [item, setPostsData] = React.useState({});
     const [isRegister, setRegister] = React.useState(item.isRegistered);
-    const [isLoading, setLoading] = React.useState(false);
 
 
     // Update Register Button
@@ -54,9 +59,9 @@ const Event = () => {
 
     return (
         <div>
-            {isLoading ? (
+            {loading ? (
                 <div className="p-5 flex justify-center items-center">
-                    <img className="h-16 w-16" src="https://icons8.com/preloaders/preloaders/1488/Iphone-spinner-2.gif" alt="loading"/>
+                    <Loading/>
                 </div>
             ) : (
                 <div className='m-5 mx-auto container flex flex-col items-center border bg-slate-100 shadow rounded' id={item._id}>
@@ -85,19 +90,16 @@ const Event = () => {
                                 {!isRegister ? <button onClick={handleRegister}>Register Now</button> : <button onClick={handleRegister}>UnRegsiter</button>}  
                             </div>  
                         ) : (
-                            <div className='text-center'>
-                                
+                            <div className='text-center'>  
                                 <div className="p-3 bg-green-300 flex flex-row justify-center items-center">
                                     <div>
                                         Thank you for registering 🎉, Here is the whatsapp link for the event
                                         <p><a href={item.waLink} className='text-xl text-green-800'>{item.waLink}</a></p>
                                     </div>  
                                 </div> 
-                                {console.log(item)}
                             </div>
                         )}
 
-        
                     </div>
                 </div>
             )}

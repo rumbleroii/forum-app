@@ -3,16 +3,20 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { axiosInstance, getAuthorizationHeader } from '../services/AxiosInstance';
 import useUserStore from '../services/Store';
+import Loading from './Loading';
 
 const Profile = () => {
-
+  // Global
   const user = useUserStore(state => state.authUser);
-  
-  const [profileLoading, setProfileLoading] = React.useState(false);
+  const loading = useUserStore(state => state.loading);
+  const setLoading = useUserStore(state => state.setLoading);
+
+  // Local
   const [profileData, setProfileData] = React.useState({});
 
   React.useEffect(() => {
     async function fetchData() {
+      setLoading(true);
       try {
           const profileReturn = await axiosInstance.get(`/profile/me`, {
               headers: {
@@ -21,7 +25,7 @@ const Profile = () => {
           })
 
           setProfileData(profileReturn.data);
-          console.log(profileData);
+          setLoading(false);
       } catch (err) {
           console.log(err);
           // alert("Profile is Not Set, Please Create profile");
@@ -36,7 +40,11 @@ const Profile = () => {
       <div className='container mx-auto p-5 text-center text-4xl border-b-2'>
         <h1>My Profile</h1>
       </div>
-      <ProfileCard user={user} profileData={profileData} />
+      {loading ? 
+      <div className='flex m-4 flex-col justify-center items-center'>
+        <Loading/>
+      </div>
+      : <ProfileCard user={user} profileData={profileData} />}
     </div>
   )
 }

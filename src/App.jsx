@@ -6,10 +6,10 @@ import Profile from './components/Profile';
 import Register from './components/Register';
 import Event from './components/Event';
 import Home from './components/Home';
+import About from './components/About';
 
 import ProtectedRoute from './services/ProtectedRoute';
 import AppPanel from './crud/AppPanel';
-import About from './components/About';
 
 
 const App = () => {
@@ -19,7 +19,6 @@ const App = () => {
         <Route index element={<Landing/>}/>
         <Route path='register' element={<Register/>}/>
       </Route>
-
       <Route element={<ProtectedRoute/>}>
         <Route path='/home' element={<Home/>}/>
         <Route path='/profile' element={<Profile/>}/>
